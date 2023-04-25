@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+    <link rel="stylesheet" href="resume.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <script>
+        window.addEventListener('load',fetchdata);
+
+        async function fetchdata() {
+            let headersList = {
+            "Accept": "/",
+            "User-Agent": "Thunder Client (https://www.thunderclient.com)",
+            "Content-Type": "application/json"
+        }
+
+        let bodyContent = JSON.stringify(
+            {
+                "userId": "6447f13483fe0a158be28e03"
+              
+            });
+
+        let response = await fetch("http://localhost:3000/user/getDetails", {
+            method: "POST",
+            body: bodyContent,
+            headers: headersList
+        });
+
+        let data = await response.text();
+        let parsedData = JSON.parse(data);
+        console.log(data);
+        document.getElementById("uname").innerHTML=parsedData.name;
+        document.getElementById("contact").innerHTML=parsedData.phone;
+        document.getElementById("email").innerHTML=parsedData.email;
+        document.getElementById("linkdin").innerHTML=parsedData.linkedIn;
+        document.getElementById("hackerank").innerHTML=parsedData.hackerRank;
+        document.getElementById("gitHub").innerHTML=parsedData.gitHub;
+        
+        //languages
+        const languageMain=document.getElementById('languageMain');
+        const language = Object.values(parsedData.languages_known); 
+        language.forEach((printlang)=> {
+       //     <h1 class="findOnlineHeading">Hindi</h1>
+        const languagehead=document.createElement("h1");
+                var text=document.createTextNode(printlang);
+                languagehead.appendChild(text);
+                languagehead.className="findOnlineHeadingLanguage";
+                languageMain.appendChild(languagehead);
+        })
+
+        //skills
+        var node= node=document.getElementById('skills');
+        const skills = Object.values(parsedData.skills); 
+        skills.forEach((skill)=> {
+                var para=document.createElement("p");
+                var text=document.createTextNode(skill+"\n");
+                para.appendChild(text);
+                para.className="skills";
+                node.appendChild(para);            
+        });
+
+        //education
+        for (const [key, value] of Object.entries(parsedData.education)) {
+                const institutionName = value.Institution_name;
+                const yearOfPass = value.Year_of_pass;
+                const score = value.Score;
+
+                const divedu = document.getElementById("education");
+                // const leftSide=document.getElementById("leftSide");
+
+                const tkey=document.createElement("h1");
+                const textkey = document.createTextNode(`${key}`);
+                tkey.appendChild(textkey);
+                tkey.className="contentBold blue col-12";
+                
+
+                const subdivleft=document.createElement('div');
+                subdivleft.className="col-9";    
+
+                const tcollege=document.createElement("p");
+                const textcollege = document.createTextNode(`${institutionName}`);
+                tcollege.appendChild(textcollege);
+                tcollege.className="contentBold yellow newstyle";
+                subdivleft.appendChild(tcollege);
+                divedu.appendChild(tkey);
+                
+
+
+                const tyear=document.createElement("p");
+                const textyear = document.createTextNode(`${yearOfPass}`);
+                tyear.appendChild(textyear);
+                tyear.className="contentInside blue newstyle2";
+                subdivleft.appendChild(tyear);
+                divedu.appendChild(subdivleft);
+
+                const subdivright=document.createElement('div');
+                subdivright.className="col-3 newstyle3";
+
+                const tmark=document.createElement("p");
+                const textmark = document.createTextNode(`${score}`);
+                tmark.appendChild(textmark);
+                tmark.className="contentBold blue newstyle4";
+                subdivright.appendChild(tmark);   
+                divedu.appendChild(subdivright);           
+        }
+        
+        document.getElementById('image').src=parsedData.image;
+        document.getElementById("certificate").innerHTML=parsedData.certifications;
+        
+        
+        for (const [key, value] of Object.entries(parsedData.references)) {
+            
+            const name = value.name;
+            const contact = value.contact;
+            const references = document.getElementById("references");
+            const referencesName=document.createElement("h1");
+            const textReferencesName = document.createTextNode(`${name}`);
+            referencesName.appendChild(textReferencesName);
+            referencesName.className="findOnlineHeading yellow";
+            references.appendChild(referencesName);   
+
+            const referencesContact=document.createElement("h2");
+            const textReferencesContact = document.createTextNode(`${contact}`);
+            referencesContact.appendChild(textReferencesContact);
+            referencesContact.className="findOnlineContents blue";
+            references.appendChild(referencesContact);
+         
+        }
+
+        for (const [key, value] of Object.entries(parsedData.projects)) {
+            
+            const name = value.name;
+            const project = document.getElementById("projects");
+            const projectDetails=document.createElement("h1");
+            const textProject = document.createTextNode(`${name}`);
+            projectDetails.appendChild(textProject);
+            projectDetails.className="contentBold blue";
+            project.appendChild(projectDetails);        
+        }
+
+
+    } 
+    
+    </script>
+    <!--Resume-->
+    <div class="resume">
+        <!-- Head -->
+        <div class="head col-12">
+            <div class="col-8">
+                <h1 class="name blue" id="uname"></h1>
+                <p class="contentHeading yellow">Web Developer/App Developer</p>
+                <div class="col-7">
+                    <p class="content blue" ><i class="fa fa-phone yellow" aria-hidden="true" ></i> <span id="contact"></span></p>
+                    <p class="content blue"><i class="fa fa-link yellow" aria-hidden="true"></i>
+                        <span id="linkdin"></span></p>
+                    </div>
+                <div class="col-5">
+                    <p class="content blue"><i class="fa fa-envelope-o yellow" aria-hidden="true"></i>
+                        <span id="email"></span></p>
+                    <p class="content blue"><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Manipal, Uduppi
+                    </p>
+                </div>
+            </div>
+            <div class="col-4">
+                <img class="image right" src="" alt="" id="image">
+            </div>
+        </div>
+
+        <!-- Contents -->
+        <div class="col-12" style="margin-top: 20px;">
+            <!-- Left Grid -->
+            <div class="col-7" style="padding-right: 3%;">
+
+                <!-- Summary -->
+                <div class="underline">
+                    <p class="contentHeading blue">SUMMARY</p>
+                </div>
+                <p class="contentInside blue spacebelow">
+                       Skilled in collaborating with cross-functional teams to drive projects from concept to completion. Able to adapt to new technologies quickly and committed to continuously expanding technical knowledge. </p>
+                <!-- End Summary -->
+
+                <!-- Certification -->
+                <!-- <div class="underline">
+                    <p class="contentHeading blue">CERTIFICATION</p>
+                </div>
+                <p class="contentBold yellow" id="certificate"></p> -->
+                
+                <!-- End Certification -->
+
+                <!-- Experiences -->
+                <!-- <div class="underline" style="margin-top: 4%;">
+                    <p class="contentHeading blue">EXPERIENCE</p>
+                </div> -->
+                <!-- <div class="col-12">
+                    <h1 class="contentBold blue">Flutter Developer</h1>
+                    <p class="contentBold yellow" style="margin-top: 0.5%;font-size: 0.8vw;">Vyavsay</p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> 04/2022 - 09/2022</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> ~remote</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Create online store in 15
+                        seconds</p>
+                    <ul>
+                        <li><mark>Managed the software developement team of 4 members</mark></li>
+                    </ul>
+                </div> -->
+                <!-- <div class="col-12 dashedBorderTop">
+                    <h1 class="contentBold blue">Front-End/App Developer</h1>
+                    <p class="contentBold yellow" style="margin-top: 0.5%;font-size: 0.8vw;">Delta Node(Stundent's
+                        Startup)</p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> 2023 - Ongoing</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> MIT</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">One of India's first student
+                        exclusive freelance market space.</p>
+                    <ul style="margin-bottom:4% ;">
+                        <li><mark>Designed Responsive App Design with Rest-API intergration with flutter and
+                                React</mark></li>
+                        <li><mark>Worked with a team of 4 members</mark></li>
+                    </ul>
+                </div> -->
+                <!-- End Experiences -->
+
+                <!-- Find Me Online -->
+                <div class="underline">
+                    <p class="contentHeading blue">FIND ME ONLINE</p>
+                </div>
+                <div class="col-12">                          
+                    <div class="col-6 blue">
+                        <div class="col-1 yellow" style="padding-right: 1%;"><i class="fa fa-globe" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-11 blue">
+                            <h1 class="findOnlineHeading">Hacker Rank</h1>
+                            <h2 class="findOnlineContents" id="hackerank"></h2>
+                        </div>
+                    </div>
+                    <div class="col-6 blue">
+                        <div class="col-1 yellow" style="padding-right: 1%;"><i class="fa fa-github" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-11 blue">
+                            <h1 class="findOnlineHeading">Github</h1>
+                            <h2 class="findOnlineContents" id="gitHub"></h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Find Me Online -->
+
+                <!-- Languages -->
+                <div class="underline col-12" style="margin-top:4% ;">
+                    <p class="contentHeading blue">LANGUAGES</p>
+                </div>
+                <div class="col-12">
+                    <div class="col-6 blue">
+                        <div class="col-6" style="padding-right: 1%;" id="languageMain">
+                            <!-- <h1 class="findOnlineHeading" ></h1> -->
+                        </div>                        
+                    </div>
+                </div>
+                <!-- End Languages -->
+
+                <!-- References -->
+                <div class="underline col-12" style="margin-top:4% ;">
+                    <p class="contentHeading blue">REFERENCES</p>
+                </div>
+                <div class="col-12" id="references">
+                    <!-- <h1 class="findOnlineHeading yellow">Mrs.Nisha Crasta</h1>
+                    <h2 class="findOnlineContents blue">9538510221</h2> -->
+                </div>
+                <!-- End References -->
+
+                <!-- Projects -->
+                <div class="col-12 underline" style="display: block; margin-top: 5%;">
+                    <p class="contentHeading blue">PROJECTS</p>
+                </div>
+                <div class="col-12 spacebelow" id="projects">
+                    <!-- <h1 class="contentBold blue">Profile Mates</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> 02/2023 - 04/2023</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Short summary of work</p>
+                    <ul>
+                        <li><mark>Developed this Project in second semester for web technologies lab MCA along with 5
+                                members under the guidance of Mr.Tojo Thomas and Mrs.Vidya Rao DSCA Department, MIT
+                                (2023)</mark></li>
+                    </ul> -->
+                </div>
+                <!-- <div class="col-12 dashedBorderTop">
+                    <h1 class="contentBold blue">Vyavasay</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> Date period</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Create online store in 15
+                        seconds</p>
+                    <ul>
+                        <li><mark>Developed this Project in Final Semester BCA along with 2 members under the guidance
+                                of Mrs.Wilma Cornelio - HOD and Mrs.Jyothi BCA Deparment, MCK [2022].</mark></li>
+                    </ul>
+                </div>
+                <div class="col-12 dashedBorderTop">
+                    <h1 class="contentBold blue">Nike Shoe Mart</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> Date period</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Responsive web app design
+                    </p>
+                    <ul>
+                        <li><mark>Designed using React and TailwindCSS</mark></li>
+                    </ul>
+                </div> -->
+                <!-- End Projects -->
+                <div class="underline">
+                    <p class="contentHeading blue">CERTIFICATION</p>
+                </div>
+                <p class="contentBold yellow" id="certificate"></p>
+
+            </div>
+            <!-- End Left Grid -->
+
+            <!-- Rigth Grid -->
+            <div class="col-5">
+
+                <!-- Skills -->
+                <div class="underline">
+                    <p class="contentHeading blue">SKILLS</p>
+                </div>
+                
+                <div style="height: 100px" id="skills">
+                </div>
+                <!-- End Skills -->
+
+                <!-- Education -->
+                <div class="underline" style="display: block;">
+                    <p class="contentHeading blue">EDUCATION</p>
+                </div>
+                <div>
+                <div class="col-12" id="education">
+                    
+                </div>
+            </div>                
+                <!-- End Education -->
+
+                <!-- Projects -->
+                <!-- <div class="col-12 underline" style="display: block; margin-top: 5%;">
+                    <p class="contentHeading blue">PROJECTS</p>
+                </div>
+                <div class="col-12">
+                    <h1 class="contentBold blue">Profile Mates</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> 02/2023 - 04/2023</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Short summary of work</p>
+                    <ul>
+                        <li><mark>Developed this Project in second semester for web technologies lab MCA along with 5
+                                members under the guidance of Mr.Tojo Thomas and Mrs.Vidya Rao DSCA Department, MIT
+                                (2023)</mark></li>
+                    </ul>
+                </div> -->
+                <!-- <div class="col-12 dashedBorderTop">
+                    <h1 class="contentBold blue">Vyavasay</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> Date period</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Create online store in 15
+                        seconds</p>
+                    <ul>
+                        <li><mark>Developed this Project in Final Semester BCA along with 2 members under the guidance
+                                of Mrs.Wilma Cornelio - HOD and Mrs.Jyothi BCA Deparment, MCK [2022].</mark></li>
+                    </ul>
+                </div> -->
+                <!-- <div class="col-12 dashedBorderTop">
+                    <h1 class="contentBold blue">Nike Shoe Mart</h1>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 1%;">
+                        <span style="padding-left: 1%; padding-right: 3%;"><i class="fa fa-calendar yellow"
+                                aria-hidden="true"></i> Date period</span>
+                        <span><i class="fa fa-map-marker yellow" aria-hidden="true"></i> Location</span>
+                    </p>
+                    <p class="contentInside blue" style="font-size: 0.7vw; margin-top: 2%;">Responsive web app design
+                    </p>
+                    <ul>
+                        <li><mark>Designed using React and TailwindCSS</mark></li>
+                    </ul>
+                </div> -->
+                <!-- End Projects -->
+
+            </di>
+            <!-- End Right Grid -->
+
+        </div>
+        <!-- End Contents -->
+
+    </div>
+    <!-- End Resume -->
+
+</body>
+
+</html>
